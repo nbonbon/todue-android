@@ -1,24 +1,18 @@
 package com.example.todue;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 public class TaskActivity extends AppCompatActivity {
-
-    private RecyclerView mRecylerViewTasks;
-    private LinearLayoutManager mTaskLayoutManager;
+    public static final String TASK_INFO = "com.example.todue.TASK_INFO";
+    private TaskInfo mTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +21,22 @@ public class TaskActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        intializeDisplayContent();
+        readDisplayStateValues();
+
+        EditText textTaskTitle = findViewById(R.id.text_task_title);
+        EditText textTaskDescription = findViewById(R.id.text_task_description);
+
+        displayTask(textTaskTitle, textTaskDescription);
     }
 
-    private void intializeDisplayContent() {
+    private void displayTask(EditText textTaskTitle, EditText textTaskDescription) {
+        textTaskTitle.setText(mTask.getTitle());
+        textTaskDescription.setText(mTask.getDescription());
+    }
+
+    private void readDisplayStateValues() {
+        Intent intent = getIntent();
+        mTask = intent.getParcelableExtra(TASK_INFO);
     }
 
     @Override

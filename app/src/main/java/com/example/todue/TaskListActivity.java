@@ -38,7 +38,8 @@ public class TaskListActivity extends AppCompatActivity {
     }
 
     private void initializeDisplayContent() {
-        ListView listTasks = findViewById(R.id.list_tasks);
+        final ListView listTasks = findViewById(R.id.list_tasks);
+
         List<TaskInfo> tasks = DataManager.getInstance().getNotes();
         ArrayAdapter<TaskInfo> adapterTasks = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
         listTasks.setAdapter(adapterTasks);
@@ -47,6 +48,8 @@ public class TaskListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(TaskListActivity.this, TaskActivity.class);
+                TaskInfo task = (TaskInfo) listTasks.getItemAtPosition(position);
+                intent.putExtra(TaskActivity.TASK_INFO, task);
                 startActivity(intent);
             }
         });
