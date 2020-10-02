@@ -1,4 +1,4 @@
-package com.example.todue;
+package com.njb.todue;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.todue;
+package com.njb.todue;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 public class TaskActivity extends AppCompatActivity {
-    public static final String TASK_INFO = "com.example.todue.TASK_INFO";
+    public static final String TASK_INFO = "com.njb.todue.TASK_INFO";
     private TaskInfo mTask;
 
     @Override

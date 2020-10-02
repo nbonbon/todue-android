@@ -1,4 +1,4 @@
-package com.example.todue;
+package com.njb.todue;
 
 import android.content.Intent;
 import android.os.Bundle;

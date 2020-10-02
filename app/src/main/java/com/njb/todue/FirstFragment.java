@@ -1,4 +1,4 @@
-package com.example.todue;
+package com.njb.todue;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
