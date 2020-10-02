@@ -1,9 +1,12 @@
 package com.example.todue;
 
-public class TaskInfo {
-    private String title;
-    private String description;
-    private boolean isComplete;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class TaskInfo implements Parcelable {
+    private String mTitle;
+    private String mDescription;
+    private boolean mIsComplete;
 
     public TaskInfo()
     {
@@ -17,37 +20,43 @@ public class TaskInfo {
 
     public TaskInfo(String title, String description, boolean isComplete)
     {
-        this.title = title;
-        this.description = description;
-        this.isComplete = isComplete;
+        this.mTitle = title;
+        this.mDescription = description;
+        this.mIsComplete = isComplete;
     }
 
-    public String getTitle() {
-        return title;
+    private TaskInfo(Parcel parcel) {
+        mTitle = parcel.readString();
+        mDescription = parcel.readString();
+        mIsComplete = parcel.readByte() != 0; // mIsComplete == true if byte != 0
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getmTitle() {
+        return mTitle;
     }
 
-    public String getDescription() {
-        return description;
+    public void setmTitle(String mTitle) {
+        this.mTitle = mTitle;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getmDescription() {
+        return mDescription;
+    }
+
+    public void setmDescription(String mDescription) {
+        this.mDescription = mDescription;
     }
 
     public boolean isComplete() {
-        return isComplete;
+        return mIsComplete;
     }
 
     public void setComplete(boolean complete) {
-        isComplete = complete;
+        mIsComplete = complete;
     }
 
     private String getCompareKey() {
-        return title + "|" + description;
+        return mTitle + "|" + mDescription;
     }
 
     @Override
@@ -69,4 +78,29 @@ public class TaskInfo {
     public String toString() {
         return getCompareKey();
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mTitle);
+        parcel.writeString(mDescription);
+        parcel.writeByte((byte) (mIsComplete ? 1 : 0)); //if mIsComplete == true, byte == 1
+    }
+
+    public static final Parcelable.Creator<TaskInfo> CREATOR =
+            new Parcelable.Creator<TaskInfo>() {
+                @Override
+                public TaskInfo createFromParcel(Parcel parcel) {
+                    return new TaskInfo(parcel);
+                }
+
+                @Override
+                public TaskInfo[] newArray(int size) {
+                    return new TaskInfo[size];
+                }
+            };
 }
