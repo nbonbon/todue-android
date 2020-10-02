@@ -6,5 +6,3 @@ Module: Working with Activities
 Video: Handling New Note Creation
 
 Trello board: https://trello.com/b/SKIJ2387
-
-ReadMe edit to test new action
