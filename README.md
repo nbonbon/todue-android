@@ -3,4 +3,6 @@ ToDo list android application
 
 Pluralsight Course: Understanding Android Application Basics
 Module: Working with Activities
-Video: Describing Operations with Intents
+Video: Handling New Note Creation
+
+Trello board: https://trello.com/b/SKIJ2387
