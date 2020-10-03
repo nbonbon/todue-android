@@ -38,7 +38,7 @@ public class TaskListActivity extends AppCompatActivity {
     private void initializeDisplayContent() {
         final ListView listTasks = findViewById(R.id.list_tasks);
 
-        List<TaskInfo> tasks = DataManager.getInstance().getNotes();
+        List<TaskInfo> tasks = DataManager.getInstance().getTasks();
         ArrayAdapter<TaskInfo> adapterTasks = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
         listTasks.setAdapter(adapterTasks);
 

@@ -15,6 +15,10 @@ public class TaskActivity extends AppCompatActivity {
     public static final int POSITION_NOT_SET = -1;
     private TaskInfo mTask;
     private boolean mIsNewTask;
+    private EditText mTextTaskTitle;
+    private EditText mTextTaskDescription;
+    private int mTaskPosition;
+    private boolean mIsCancelling;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +29,11 @@ public class TaskActivity extends AppCompatActivity {
 
         readDisplayStateValues();
 
-        EditText textTaskTitle = findViewById(R.id.text_task_title);
-        EditText textTaskDescription = findViewById(R.id.text_task_description);
+        mTextTaskTitle = findViewById(R.id.text_task_title);
+        mTextTaskDescription = findViewById(R.id.text_task_description);
 
         if (!mIsNewTask) {
-            displayTask(textTaskTitle, textTaskDescription);
+            displayTask(mTextTaskTitle, mTextTaskDescription);
         }
     }
 
@@ -43,9 +47,17 @@ public class TaskActivity extends AppCompatActivity {
         int position = intent.getIntExtra(TASK_POSITION, POSITION_NOT_SET);
         mIsNewTask = (position == POSITION_NOT_SET);
 
-        if (!mIsNewTask) {
-            mTask = DataManager.getInstance().getNotes().get(position);
+        if (mIsNewTask) {
+            createNewTask();
+        } else {
+            mTask = DataManager.getInstance().getTasks().get(position);
         }
+    }
+
+    private void createNewTask() {
+        DataManager dm = DataManager.getInstance();
+        mTaskPosition = dm.createNewTask();
+        mTask = dm.getTasks().get(mTaskPosition);
     }
 
     @Override
@@ -56,6 +68,24 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (mIsCancelling) {
+            if (mIsNewTask)
+            {
+                DataManager.getInstance().removeTask(mTaskPosition);
+            }
+        } else {
+            saveTask();
+        }
+    }
+
+    private void saveTask() {
+        mTask.setTitle(mTextTaskTitle.getText().toString());
+        mTask.setDescription(mTextTaskDescription.getText().toString());
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -63,10 +93,24 @@ public class TaskActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_send_email) {
+            sendEmail();
             return true;
+        } else if (id == R.id.action_cancel) {
+            mIsCancelling = true;
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sendEmail() {
+        String subject = mTextTaskTitle.getText().toString();
+        String text = mTextTaskDescription.getText().toString();
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc2822");
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        startActivity(intent);
     }
 }

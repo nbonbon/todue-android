@@ -24,26 +24,26 @@ public class DataManager {
         return "jimw@jwhh.com";
     }
 
-    public List<TaskInfo> getNotes() {
+    public List<TaskInfo> getTasks() {
         return mTasks;
     }
 
-    public int createNewNote() {
-        TaskInfo note = new TaskInfo(null, null);
-        mTasks.add(note);
+    public int createNewTask() {
+        TaskInfo task = new TaskInfo(null, null);
+        mTasks.add(task);
         return mTasks.size() - 1;
     }
 
-    public int findNote(TaskInfo note) {
+    public int findTask(TaskInfo task) {
         for(int index = 0; index < mTasks.size(); index++) {
-            if(note.equals(mTasks.get(index)))
+            if(task.equals(mTasks.get(index)))
                 return index;
         }
 
         return -1;
     }
 
-    public void removeNote(int index) {
+    public void removeTask(int index) {
         mTasks.remove(index);
     }
 
