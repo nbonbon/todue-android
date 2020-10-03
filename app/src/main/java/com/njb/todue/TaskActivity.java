@@ -11,8 +11,10 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 public class TaskActivity extends AppCompatActivity {
-    public static final String TASK_INFO = "com.njb.todue.TASK_INFO";
+    public static final String TASK_POSITION = "com.njb.todue.TASK_POSITION";
+    public static final int POSITION_NOT_SET = -1;
     private TaskInfo mTask;
+    private boolean mIsNewTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,9 @@ public class TaskActivity extends AppCompatActivity {
         EditText textTaskTitle = findViewById(R.id.text_task_title);
         EditText textTaskDescription = findViewById(R.id.text_task_description);
 
-        displayTask(textTaskTitle, textTaskDescription);
+        if (!mIsNewTask) {
+            displayTask(textTaskTitle, textTaskDescription);
+        }
     }
 
     private void displayTask(EditText textTaskTitle, EditText textTaskDescription) {
@@ -36,7 +40,12 @@ public class TaskActivity extends AppCompatActivity {
 
     private void readDisplayStateValues() {
         Intent intent = getIntent();
-        mTask = intent.getParcelableExtra(TASK_INFO);
+        int position = intent.getIntExtra(TASK_POSITION, POSITION_NOT_SET);
+        mIsNewTask = (position == POSITION_NOT_SET);
+
+        if (!mIsNewTask) {
+            mTask = DataManager.getInstance().getNotes().get(position);
+        }
     }
 
     @Override

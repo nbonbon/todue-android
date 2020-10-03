@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -29,8 +28,7 @@ public class TaskListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(TaskListActivity.this, TaskActivity.class));
             }
         });
 
@@ -48,8 +46,7 @@ public class TaskListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(TaskListActivity.this, TaskActivity.class);
-                TaskInfo task = (TaskInfo) listTasks.getItemAtPosition(position);
-                intent.putExtra(TaskActivity.TASK_INFO, task);
+                intent.putExtra(TaskActivity.TASK_POSITION, position);
                 startActivity(intent);
             }
         });
