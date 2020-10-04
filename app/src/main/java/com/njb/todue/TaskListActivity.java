@@ -17,6 +17,8 @@ import java.util.List;
 
 public class TaskListActivity extends AppCompatActivity {
 
+    private ArrayAdapter<TaskInfo> mAdapterTasks;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,12 +37,18 @@ public class TaskListActivity extends AppCompatActivity {
         initializeDisplayContent();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAdapterTasks.notifyDataSetChanged();
+    }
+
     private void initializeDisplayContent() {
         final ListView listTasks = findViewById(R.id.list_tasks);
 
         List<TaskInfo> tasks = DataManager.getInstance().getTasks();
-        ArrayAdapter<TaskInfo> adapterTasks = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
-        listTasks.setAdapter(adapterTasks);
+        mAdapterTasks = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
+        listTasks.setAdapter(mAdapterTasks);
 
         listTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

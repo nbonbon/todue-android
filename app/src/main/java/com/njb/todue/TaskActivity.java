@@ -3,8 +3,10 @@ package com.njb.todue;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ public class TaskActivity extends AppCompatActivity {
     private EditText mTextTaskDescription;
     private int mTaskPosition;
     private boolean mIsCancelling;
+    private TaskActivityViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +30,17 @@ public class TaskActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ViewModelProvider viewModelProvider = new ViewModelProvider(getViewModelStore(),
+                ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()));
+        mViewModel = viewModelProvider.get(TaskActivityViewModel.class);
+
+        if (mViewModel.mIsNewlyCreated && savedInstanceState != null) {
+            mViewModel.restoreState(savedInstanceState);
+        }
+        mViewModel.mIsNewlyCreated = false;
+
         readDisplayStateValues();
+        saveOriginalTaskValues();
 
         mTextTaskTitle = findViewById(R.id.text_task_title);
         mTextTaskDescription = findViewById(R.id.text_task_description);
@@ -35,6 +48,15 @@ public class TaskActivity extends AppCompatActivity {
         if (!mIsNewTask) {
             displayTask(mTextTaskTitle, mTextTaskDescription);
         }
+    }
+
+    private void saveOriginalTaskValues() {
+        if (mIsNewTask) {
+            return;
+        }
+
+        mViewModel.mOriginalTaskTitle = mTask.getTitle();
+        mViewModel.mOriginalTaskDescription = mTask.getDescription();
     }
 
     private void displayTask(EditText textTaskTitle, EditText textTaskDescription) {
@@ -74,10 +96,23 @@ public class TaskActivity extends AppCompatActivity {
             if (mIsNewTask)
             {
                 DataManager.getInstance().removeTask(mTaskPosition);
+            } else {
+               storePreviousTaskValues(); 
             }
         } else {
             saveTask();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mViewModel.saveState(outState);
+    }
+
+    private void storePreviousTaskValues() {
+        mTask.setTitle(mViewModel.mOriginalTaskTitle);
+        mTask.setDescription(mViewModel.mOriginalTaskDescription);
     }
 
     private void saveTask() {
