@@ -17,11 +17,11 @@ public class DataManager {
     }
 
     public String getCurrentUserName() {
-        return "Jim Wilson";
+        return "John Doe";
     }
 
     public String getCurrentUserEmail() {
-        return "jimw@jwhh.com";
+        return "jdoe@jdoe.com";
     }
 
     public List<TaskInfo> getTasks() {
