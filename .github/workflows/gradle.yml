@@ -21,11 +21,11 @@ jobs:
     - name: Execute Instrumentation Tests (gradlew connectedCheck - api 23)
       uses: reactivecircus/android-emulator-runner@v2
       with:
-      api-level: 23
-      target: default
-      arch: x86
-      profile: Nexus 6
-      script: ./gradlew connectedCheck --stacktrace
+        api-level: 23
+        target: default
+        arch: x86
+        profile: Nexus 6
+        script: ./gradlew connectedCheck --stacktrace
   build:
     runs-on: ubuntu-latest
     needs: test
