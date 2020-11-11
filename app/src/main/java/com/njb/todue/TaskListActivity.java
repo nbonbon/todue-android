@@ -19,6 +19,8 @@ import java.util.List;
 
 public class TaskListActivity extends AppCompatActivity {
 
+    private TaskRecyclerAdapter mTaskRecyclerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,7 @@ public class TaskListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mTaskRecyclerAdapter.notifyDataSetChanged();
     }
 
     private void initializeDisplayContent() {
@@ -48,7 +51,7 @@ public class TaskListActivity extends AppCompatActivity {
         recyclerTasks.setLayoutManager(taskLayoutManager);
 
         List<TaskInfo> tasks = DataManager.getInstance().getTasks();
-        TaskRecyclerAdapter taskRecyclerAdapter = new TaskRecyclerAdapter(this, tasks);
-        recyclerTasks.setAdapter(taskRecyclerAdapter);
+        mTaskRecyclerAdapter = new TaskRecyclerAdapter(this, tasks);
+        recyclerTasks.setAdapter(mTaskRecyclerAdapter);
     }
 }

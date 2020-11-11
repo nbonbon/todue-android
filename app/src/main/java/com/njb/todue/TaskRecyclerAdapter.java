@@ -1,6 +1,7 @@
 package com.njb.todue;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
         TaskInfo task = mTasks.get(position);
         holder.mTextTitle.setText(task.getTitle());
         holder.mTextDescription.setText(task.getDescription());
+        holder.mCurrentPosition = position;
     }
 
     @Override
@@ -46,11 +48,21 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
 
         public final TextView mTextTitle;
         public final TextView mTextDescription;
+        public int mCurrentPosition;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTextTitle = itemView.findViewById(R.id.task_title);
             mTextDescription = itemView.findViewById(R.id.task_description);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, TaskActivity.class);
+                    intent.putExtra(TaskActivity.TASK_POSITION, mCurrentPosition);
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 }
