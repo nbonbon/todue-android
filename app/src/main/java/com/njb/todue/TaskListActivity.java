@@ -7,6 +7,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,8 +18,6 @@ import android.widget.ListView;
 import java.util.List;
 
 public class TaskListActivity extends AppCompatActivity {
-
-    private ArrayAdapter<TaskInfo> mAdapterTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,23 +40,11 @@ public class TaskListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mAdapterTasks.notifyDataSetChanged();
     }
 
     private void initializeDisplayContent() {
-        final ListView listTasks = findViewById(R.id.list_tasks);
-
-        List<TaskInfo> tasks = DataManager.getInstance().getTasks();
-        mAdapterTasks = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
-        listTasks.setAdapter(mAdapterTasks);
-
-        listTasks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(TaskListActivity.this, TaskActivity.class);
-                intent.putExtra(TaskActivity.TASK_POSITION, position);
-                startActivity(intent);
-            }
-        });
+        final RecyclerView recyclerTasks = findViewById(R.id.list_tasks);
+        final LinearLayoutManager taskLayoutManager = new LinearLayoutManager(this);
+        recyclerTasks.setLayoutManager(taskLayoutManager);
     }
 }
