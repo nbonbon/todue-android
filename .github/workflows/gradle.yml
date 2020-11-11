@@ -19,7 +19,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew test
     - name: Execute Instrumentation Tests (gradlew connectedCheck - api 23)
-      uses: reactivecircus/android-emulator-runner@v2
+      uses: ReactiveCircus/android-emulator-runner@v2.11.0
       with:
         api-level: 23
         target: default
