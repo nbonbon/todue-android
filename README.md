@@ -2,6 +2,6 @@
 ToDo list android application
 
 Pluralsight Course: Enhancing the Android Application Experience
-Working with RecyclerView and CardView [COMPLETE]
+Binding Data to RecyclerView [IN PROGRESS]
 
 Trello board: https://trello.com/b/SKIJ2387
