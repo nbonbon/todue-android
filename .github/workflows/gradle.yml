@@ -17,7 +17,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew cleanTest test
+      run: ./gradlew cleanTest test --stacktrace --info
     - name: Execute Instrumentation Tests (gradlew connectedCheck - api 23)
       uses: ReactiveCircus/android-emulator-runner@v2.11.0
       with:
