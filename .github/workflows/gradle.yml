@@ -18,6 +18,8 @@ jobs:
       run: chmod +x gradlew
     - name: Run Unit Tests
       run: ./gradlew clean test --stacktrace --info
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1.4
     - name: Execute Instrumentation Tests (gradlew connectedCheck - api 23)
       uses: ReactiveCircus/android-emulator-runner@v2.11.0
       with:
@@ -26,6 +28,7 @@ jobs:
         arch: x86
         profile: Nexus 6
         script: ./gradlew connectedCheck --stacktrace --info
+
   build:
     runs-on: ubuntu-latest
     needs: test
