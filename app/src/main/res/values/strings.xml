@@ -11,4 +11,6 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_task_list">TaskListActivity</string>
     <string name="title_activity_task">Edit Task</string>
+    <string name="hint_task_description">Description</string>
+    <string name="hint_task_title">Title</string>
 </resources>
