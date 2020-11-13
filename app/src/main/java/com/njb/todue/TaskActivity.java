@@ -134,9 +134,21 @@ public class TaskActivity extends AppCompatActivity {
         } else if (id == R.id.action_cancel) {
             mIsCancelling = true;
             finish();
+        } else if (id == R.id.action_next) {
+            moveNext();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void moveNext() {
+        saveTask();
+
+        ++mTaskPosition;
+        mTask = DataManager.getInstance().getTasks().get(mTaskPosition);
+
+        saveOriginalTaskValues();
+        displayTask(mTextTaskTitle, mTextTaskDescription);
     }
 
     private void sendEmail() {
