@@ -2,15 +2,15 @@ package com.njb.todue;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.EditText;
 
 public class TaskActivity extends AppCompatActivity {
     public static final String TASK_POSITION = "com.njb.todue.TASK_POSITION";
@@ -20,6 +20,7 @@ public class TaskActivity extends AppCompatActivity {
     private EditText mTextTaskTitle;
     private EditText mTextTaskDescription;
     private int mTaskPosition;
+
     private boolean mIsCancelling;
     private TaskActivityViewModel mViewModel;
 
@@ -143,35 +144,34 @@ public class TaskActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem nextMenuItem = menu.findItem(R.id.action_next);
+        MenuItem previousMenuItem = menu.findItem(R.id.action_previous);
+        int lastTaskIndex = DataManager.getInstance().getTasks().size() - 1;
+        nextMenuItem.setEnabled(mTaskPosition < lastTaskIndex);
+        previousMenuItem.setEnabled(mTaskPosition > 0);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     private void moveTask()
     {
         mTask = DataManager.getInstance().getTasks().get(mTaskPosition);
 
         saveOriginalTaskValues();
         displayTask(mTextTaskTitle, mTextTaskDescription);
+        invalidateOptionsMenu();
     }
 
     private void movePrevious() {
         saveTask();
-
-        if (mTaskPosition == 0) {
-            mTaskPosition = (DataManager.getInstance().getTasks().size() - 1);
-        } else {
-            --mTaskPosition;
-        }
-
+        --mTaskPosition;
         moveTask();
     }
 
     private void moveNext() {
         saveTask();
-
-        if (mTaskPosition == (DataManager.getInstance().getTasks().size() - 1) ) {
-            mTaskPosition = 0;
-        } else {
-            ++mTaskPosition;
-        }
-
+        ++mTaskPosition;
         moveTask();
     }
 
