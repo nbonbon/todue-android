@@ -19,9 +19,12 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Run Unit Tests
-      run: ./gradlew clean test --stacktrace --info
+      run: ./gradlew clean test
     - name: Publish Unit Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1.4
+      if: always()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Build with Gradle
       run: ./gradlew build
   
