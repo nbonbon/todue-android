@@ -7,8 +7,12 @@
         android:orderInCategory="100"
         android:title="Next" />
     <item
-        android:id="@+id/action_send_email"
+        android:id="@+id/action_previous"
         android:orderInCategory="101"
+        android:title="Previous" />
+    <item
+        android:id="@+id/action_send_email"
+        android:orderInCategory="102"
         android:title="Send as email"
         app:showAsAction="never" />
     <item

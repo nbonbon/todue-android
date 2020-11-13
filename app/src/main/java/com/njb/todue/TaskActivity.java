@@ -66,13 +66,13 @@ public class TaskActivity extends AppCompatActivity {
 
     private void readDisplayStateValues() {
         Intent intent = getIntent();
-        int position = intent.getIntExtra(TASK_POSITION, POSITION_NOT_SET);
-        mIsNewTask = (position == POSITION_NOT_SET);
+        mTaskPosition = intent.getIntExtra(TASK_POSITION, POSITION_NOT_SET);
+        mIsNewTask = (mTaskPosition == POSITION_NOT_SET);
 
         if (mIsNewTask) {
             createNewTask();
         } else {
-            mTask = DataManager.getInstance().getTasks().get(position);
+            mTask = DataManager.getInstance().getTasks().get(mTaskPosition);
         }
     }
 
@@ -136,19 +136,43 @@ public class TaskActivity extends AppCompatActivity {
             finish();
         } else if (id == R.id.action_next) {
             moveNext();
+        } else if (id == R.id.action_previous) {
+            movePrevious();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void moveNext() {
-        saveTask();
-
-        ++mTaskPosition;
+    private void moveTask()
+    {
         mTask = DataManager.getInstance().getTasks().get(mTaskPosition);
 
         saveOriginalTaskValues();
         displayTask(mTextTaskTitle, mTextTaskDescription);
+    }
+
+    private void movePrevious() {
+        saveTask();
+
+        if (mTaskPosition == 0) {
+            mTaskPosition = (DataManager.getInstance().getTasks().size() - 1);
+        } else {
+            --mTaskPosition;
+        }
+
+        moveTask();
+    }
+
+    private void moveNext() {
+        saveTask();
+
+        if (mTaskPosition == (DataManager.getInstance().getTasks().size() - 1) ) {
+            mTaskPosition = 0;
+        } else {
+            ++mTaskPosition;
+        }
+
+        moveTask();
     }
 
     private void sendEmail() {
